@@ -36,6 +36,12 @@ dependencies {
 	//lombok
 	compile('org.projectlombok:lombok')
 
+	//JPA 의존성
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+	//h2 database
+	runtimeOnly 'com.h2database:h2'
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

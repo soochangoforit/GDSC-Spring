@@ -1,5 +1,6 @@
 package com.jojoldu.book.GDSCSpringBoot2.web.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
