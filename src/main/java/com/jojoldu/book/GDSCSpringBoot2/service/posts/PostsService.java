@@ -2,6 +2,7 @@ package com.jojoldu.book.GDSCSpringBoot2.service.posts;
 
 import com.jojoldu.book.GDSCSpringBoot2.domain.posts.Posts;
 import com.jojoldu.book.GDSCSpringBoot2.domain.posts.PostsRepository;
+import com.jojoldu.book.GDSCSpringBoot2.web.dto.PostsListResponseDto;
 import com.jojoldu.book.GDSCSpringBoot2.web.dto.PostsResponseDto;
 import com.jojoldu.book.GDSCSpringBoot2.web.dto.PostsSaveRequestDto;
 import com.jojoldu.book.GDSCSpringBoot2.web.dto.PostsUpdateRequestDto;
@@ -9,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 정말 중요한 특징!!
@@ -73,6 +77,30 @@ public class PostsService {
 
         return new PostsResponseDto(entity);
     }
+
+    /**
+     * posts class에서 PostsListresponseDto로 변환하고자 할때 사용
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public void delete (Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
+
+        postsRepository.delete(posts);
+    }
+
+
+
+
 
 
 }

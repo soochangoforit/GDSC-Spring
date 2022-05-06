@@ -5,6 +5,9 @@ spring: #띄어쓰기 없음
     password:
     driver-class-name: org.h2.Driver
 
+  profiles:
+    include: oauth
+
   output:
     ansi:
       enabled: always
@@ -23,5 +26,6 @@ logging:
   level: #띄어쓰기 없음
     org.hibernate.SQL: debug #띄어쓰기 2칸
     org.hibernate.type: trace #띄어쓰기 2칸
+
 
 
