@@ -8,6 +8,9 @@ spring: #띄어쓰기 없음
   profiles:
     include: oauth
 
+  session:
+    store-type: jdbc
+
   output:
     ansi:
       enabled: always

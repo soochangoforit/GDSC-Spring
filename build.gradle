@@ -48,5 +48,12 @@ dependencies {
 	// 머스태치
 	compile('org.springframework.boot:spring-boot-starter-mustache')
 
+	// 시큐리티
+	compile('org.springframework.boot:spring-boot-starter-oauth2-client')
+
+
+	//session 저장소 사용하기 위해서
+	compile('org.springframework.session:spring-session-jdbc')
+
 }
 
