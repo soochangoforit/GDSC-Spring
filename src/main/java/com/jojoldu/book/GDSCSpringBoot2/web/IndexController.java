@@ -44,10 +44,7 @@ public class IndexController {
     }
 
 
-    @GetMapping("/test3")
-    public String test(){
-        return "test2.ht";
-    }
+
 
     @GetMapping("/posts/update/{id}")
     public String postsUpdate(@PathVariable Long id, Model model) {
