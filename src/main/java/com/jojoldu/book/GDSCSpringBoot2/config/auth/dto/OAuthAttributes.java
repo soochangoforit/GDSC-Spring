@@ -8,15 +8,18 @@ import lombok.Getter;
 import java.util.Map;
 
 // 해당 클래스는 DTO이다. 구글 연동 로그인 시 가져오는 사용자의 연동주체자, pk , 유저 정보를 담는다.
+//
 @Getter
 public class OAuthAttributes {
 
 
-    private Map<String, Object> attributes; // 구글 연동 로그인 확인시 가져오는 각종 정보들이 map 형태로 저장됨???
-    private String nameAttributeKey;
-    private String name;
+    private Map<String, Object> attributes; // 구글 연동 로그인 확인시 가져오는 각종 정보들이 map 형태로 저장됨
+    private String nameAttributeKey; //로그인 성공한 사용자의 고유 key 값
+    private String name; // 구글로부터 제공받은 정보들로 부터 "name" 이라는 속성값을 받아서 실제 name 이라는 필드에 할당
     private String email;
     private String picture;
+
+    // userNameAttributeName : 파라미터로 넘어오는 이 부분은 "로그인한 사용자의 고유 key"값을 나타낸다.
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture) {
@@ -26,6 +29,7 @@ public class OAuthAttributes {
         this.email = email;
         this.picture = picture;
     }
+
 
     // OAuth2User에서 반환되는 사용자 정보는 Map이기 때문에 값을 하나하나를 변환해야만 한다.
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
@@ -37,8 +41,10 @@ public class OAuthAttributes {
         return ofGoogle(userNameAttributeName, attributes); // 2번째 user 식별자 pk와 뒤에는 유저 정보
     }
 
-    // 구글 서비스에서 가져오는 데이터를 담는 dto 생성 메소드 , 서비스로부터 유저 정보를 가져와서 OAuthAttributes DTO를 반환하는 메소드
+
+    // 구글 서비스에서 가져오는 데이터를 바인딩해서 dto 생성 메소드 , 서비스로부터 유저 정보를 가져와서 OAuthAttributes DTO를 반환하는 메소드
     // 구글로부터 가져온 각 정보들을 날것으로 3개 필드로 담고, 전체적으로 map으로 한번 담고 , pk역할을 하는것을 담는다.
+    // 이 모든 정보를 담는 완전한 OAuth dto를 생성
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
@@ -65,10 +71,13 @@ public class OAuthAttributes {
     }
 
 
+    // 해당 서비스로부터 데이터를 제공받고 , 제공받는 데이터를 하나의 Dto로 받아주고
+    // 받아온 dto을 DB에 저장하기 위해서 User Entity로 전환한다.
+
     // DTO에 저장된 구글 연동된 정보를 Entity로 전환
-    // 처음 연동 했을때만 Entity를 직접 생성하여 DB에 저장, 한번 연동 되어서 가입된 유저는 Entity로 변환 X
-    // 가입할때의 기본 권한을 User로 주기 위해서 role 빌더 값에는 Role.Guest를 사용한다.
-    // entity를 저장혹은 upate가 DB에 일어나면 다음으로 Session클래스를 생성한다.
+    // 처음 연동 했을때만 Entity를 직접 생성하여 DB에 저장, 한번 연동(인증 성공) 되어서 가입된 유저는 Entity로 변환 X
+    // 가입할때의 기본 권한을 User로 주기 위해서 role 빌더 값에는 Role.Guest를 사용한다. 그러면 실제 DB에서는 "GUEST" 형태로 저장한다.
+    // entity를 저장 혹은 upate가 DB에 일어나면 다음으로 Session클래스를 생성한다.
     // session에 생서된 user를 넣는다.
     public User toEntity() {
         return User.builder()

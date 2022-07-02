@@ -37,6 +37,7 @@ public class User extends BaseTimeEntity {
         this.role = role;
     }
 
+
     /**
      * name이랑 picture만 변경이 가능하게?
      */

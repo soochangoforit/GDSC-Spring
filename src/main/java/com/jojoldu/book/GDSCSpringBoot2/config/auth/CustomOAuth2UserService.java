@@ -25,14 +25,29 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final UserRepository userRepository;
     private final HttpSession httpSession;
 
+
+    // 파라미터로 넘어오는 userRequest에는
+    // 어떤 서비스로부터 로그인을 했는지에 대한 id값(일종의 서비스를 구분하고자 하는 key)이 나와있고
+    // 로그인 한 사용자의 고유한 key 값을 가지고 있으며
+    // 서비스로부터 제공받은 로그인에 성공한 사용자의 정보가 OAuth2User라는 Class 안에 Map 형식으로
+    // 사용자의 정보가 key - value 형식으로 담겨져 있다.
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
+        // 구글 로그인시 로그인에 성공하면 구글 서비스로부터 request 형식으로 사용자의 정보를 제공한다.
+        // 해당 대리자는 OAuth2UserService의 기본 대리자 이며
+        // OAuth2UserRequest 가 들어오면 OAuth2User 를 반환할 수 있는 loadUser 메소드를 갖고 있다.
+        // 제네릭을 이용해서 직접 요청과 응답의 dataType을 지정할 수 있다.
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
+
+        // 구글 서비스로부터 온 request에서 대리자(delegate)의 loadUser 메소드를 통해 , 로그인에 성공한 사용자의 정보를
+        // OAuth2User의 Data Type으로 반환한다. (해당 유저의 정보가 담겨있다.)
+        // OAuth2User의 Class는 필드로 해당 유저의 정보가 담겨 있는데 Map 형식으로 key-value로 생성되어 있다.
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         // registrationId 현재 로그인 진행 중인 서비스를 구분하는 코드. - 네이버 추가 로그인 연동시 네이버 로그인인지, 구글 로그인인지 구분하기 위해 사용
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
         // OAuth2 로그인 진행시 키가 되는 필그값을 이야기한다. pk와 같은 의미이다. (구글의 경우 기본적인 코드 "sub" , 네이버 카카오등은 지원 X , naver ,google 로그인 동시 지원할때 사용
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
@@ -53,7 +68,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 이거의 역할이 뭘까???
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-                attributes.getAttributes(),
+                attributes
+
+                        .getAttributes(),
                 attributes.getNameAttributeKey());
     }
 
