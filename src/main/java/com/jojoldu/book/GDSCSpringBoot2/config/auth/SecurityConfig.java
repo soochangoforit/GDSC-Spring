@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
-                    .antMatchers("/api/v1/**").hasRole(Role.USER.name()) //게시글 등록 과정에 /api 경로로 들어간다. USER가 아니면 못 한다.
+                    //.antMatchers("/api/v1/**").hasRole(Role.USER.name()) //게시글 등록 과정에 /api 경로로 들어간다. USER가 아니면 못 한다.
                     .anyRequest().authenticated() // 나머지 예를 들어 로그인 하지 않고 /post/save 할 경우 , 인증이 되어 있지 않기 때문에 로그인하라고 창이 나온다 Oauth로
                 .and()
                     .formLogin()

@@ -68,9 +68,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 이거의 역할이 뭘까???
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-                attributes
-
-                        .getAttributes(),
+                attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
 
