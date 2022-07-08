@@ -46,6 +46,9 @@ dependencies {
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
+	//mariadb
+	compile('org.mariadb.jdbc:mariadb-java-client')
+
 	// 머스태치
 	compile('org.springframework.boot:spring-boot-starter-mustache')
 
