@@ -31,31 +31,31 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.springframework.boot:spring-boot-starter-web')
 
 	//lombok dependency
-	compile('org.projectlombok:lombok')
+	implementation('org.projectlombok:lombok')
 	annotationProcessor('org.projectlombok:lombok')
 
 
 	//JPA 의존성
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 
 	//h2 database
 	runtimeOnly 'com.h2database:h2'
 
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
 
 	//mariadb
-	compile('org.mariadb.jdbc:mariadb-java-client')
+	implementation('org.mariadb.jdbc:mariadb-java-client')
 
 	// 머스태치
-	compile('org.springframework.boot:spring-boot-starter-mustache')
+	implementation('org.springframework.boot:spring-boot-starter-mustache')
 
 	// 시큐리티
-	compile('org.springframework.boot:spring-boot-starter-oauth2-client')
+	implementation('org.springframework.boot:spring-boot-starter-oauth2-client')
 
 	//session 저장소 사용하기 위해서
-	compile('org.springframework.session:spring-session-jdbc')
+	implementation('org.springframework.session:spring-session-jdbc')
 }
 
